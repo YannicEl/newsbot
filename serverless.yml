@@ -1,5 +1,5 @@
 # org: yannicellhotka
-# app: newsbot1
+# app: newsbot
 service: newsbot
 
 plugins:
@@ -13,14 +13,57 @@ provider:
   runtime: nodejs12.x
   region: eu-central-1
   environment:
-    TOKEN: BOT_TOKEN
-    BOT_WEBHOOK_URL: WEBHOOK_URL
+    TOKEN: TOKEN
+    BUCKET: !Ref NewsbotBucket
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - s3:PutObject
+      Resource: !Join ['/', [!GetAtt NewsbotBucket.Arn, '*']]
+    - Effect: 'Allow'
+      Action:
+        - s3:ListBucket
+      Resource: !GetAtt NewsbotBucket.Arn
 
 functions:
   newsbot:
-    handler: src/index.newsbot
+    handler: src/srcBot.handler
     events:
       - http:
           path: bot
           method: post
           cors: true
+
+  downloadNews:
+    handler: src/srcDownloadNews.handler
+    events:
+      - schedule: rate(1 hour)
+
+resources:
+  Resources:
+    NewsbotBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+              MaxAge: 3000
+
+    NewsbotBucketAllowPublicReadPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref NewsbotBucket
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 's3:GetObject'
+              Resource:
+                - !Join ['/', [!GetAtt NewsbotBucket.Arn, '*']]
+              Principal: '*'
