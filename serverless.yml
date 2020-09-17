@@ -1,0 +1,26 @@
+# org: yannicellhotka
+# app: newsbot1
+service: newsbot
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  profile: yannic-serverless
+  runtime: nodejs12.x
+  region: eu-central-1
+  environment:
+    TOKEN: BOT_TOKEN
+    BOT_WEBHOOK_URL: WEBHOOK_URL
+
+functions:
+  newsbot:
+    handler: src/index.newsbot
+    events:
+      - http:
+          path: bot
+          method: post
+          cors: true

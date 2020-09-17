@@ -1,0 +1,39 @@
+{
+	"name": "newsbot",
+	"version": "1.0.0",
+	"description": "Telegram bot that informs you about the news",
+	"main": "index.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/YannicEl/clubm8Bot.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/YannicEl/clubm8Bot/issues"
+	},
+	"homepage": "https://github.com/YannicEl/clubm8Bot#readme",
+	"dependencies": {
+		"aws-sdk": "^2.754.0",
+		"cheerio": "^1.0.0-rc.3",
+		"node-fetch": "^2.6.1",
+		"telegraf": "^3.38.0",
+		"telegraf-aws": "^1.0.0"
+	},
+	"devDependencies": {
+		"@types/aws-lambda": "^8.10.62",
+		"@types/cheerio": "^0.22.21",
+		"@types/node": "^14.10.3",
+		"@types/node-fetch": "^2.5.7",
+		"serverless": "^2.1.0",
+		"serverless-iam-roles-per-function": "^2.0.2",
+		"serverless-offline": "^6.7.0",
+		"serverless-webpack": "^5.3.5",
+		"ts-loader": "^8.0.3",
+		"typescript": "^4.0.2",
+		"webpack": "^4.44.1"
+	}
+}
