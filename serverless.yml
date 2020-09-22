@@ -13,7 +13,7 @@ provider:
   runtime: nodejs12.x
   region: eu-central-1
   environment:
-    TOKEN: TOKEN
+    TOKEN: ${ssm:newsbot_BOT_KEY~true}
     BUCKET: !Ref NewsbotBucket
   iamRoleStatements:
     - Effect: 'Allow'
@@ -37,7 +37,7 @@ functions:
   downloadNews:
     handler: src/srcDownloadNews.handler
     events:
-      - schedule: rate(1 hour)
+      - schedule: cron(15 * * * ? *)
 
 resources:
   Resources:

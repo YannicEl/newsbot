@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import { successReturn, errorReturn } from './helpers/helpers';
 
 import { S3 } from 'aws-sdk';
+import moment from 'moment';
 const s3 = new S3();
 
 const BUCKET = process.env.BUCKET!;
@@ -33,8 +34,8 @@ export const handler: Handler = async (event, context) => {
 };
 
 function getFileName() {
-	const date = new Date();
-	return `OE3_${
-		date.getHours() + 2
-	}h_${date.getDate()}.${date.getMonth()}.${date.getFullYear()}.mp3`;
+	return `OE3_${moment()
+		.locale('de')
+		.utcOffset(2)
+		.format('YYYY.DD.MM_HH[h]')}.mp3`;
 }
